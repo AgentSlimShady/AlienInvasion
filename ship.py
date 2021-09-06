@@ -8,6 +8,9 @@ class Ship:
         """Ініціалізувати корабель та задати його початкову позицію"""
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
+        # індикатор руху
+        self.moving_right = False
+        self.moving_left = False
 
         # завантажити зображення корабля та отримати його rect
         self.image = pygame.image.load('images/ship.bmp')
@@ -19,3 +22,13 @@ class Ship:
     def blitme(self):
         """намалювати корабель у його поточному розташуванні."""
         self.screen.blit(self.image, self.rect)
+
+    def update(self):
+        """"
+        оновити поточну позицію корабля на основі
+        індикатора руху
+        """
+        if self.moving_right:
+            self.rect.x += 1
+        if self.moving_left:
+            self.rect.x -= 1
