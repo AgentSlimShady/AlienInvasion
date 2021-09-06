@@ -28,8 +28,9 @@ class AlienInvasion:
 
     def _fire_bullets(self):
         """Створюємо нову кулю та додаємо до групи куль"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullet_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
     def run_game(self):
         """"Розпочати головний цикл гри"""
