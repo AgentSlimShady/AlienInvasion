@@ -32,17 +32,21 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _update_bullets(self):
+        """Оновити позицію куль та позбавитися старих куль"""
+        #оновити позиції куль
+        self.bullets.update()
+        # позбавитись куль шо зникли
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+
     def run_game(self):
         """"Розпочати головний цикл гри"""
         while True:
             self._check_events()
-
             self.ship.update()
-            self.bullets.update()
-            #позбавитись куль шо зникли
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
+            self._update_bullets()
             self._update_screen()
 
     def _check_events(self):
