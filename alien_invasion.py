@@ -4,6 +4,7 @@ import pygame
 
 from ship import Ship
 from settings import Settings
+from bullet import Bullet
 
 
 class AlienInvasion:
@@ -20,8 +21,15 @@ class AlienInvasion:
         # self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height)) #windowed mode
         pygame.display.set_caption("Alien Invasion v.0.1a")
         self.ship = Ship(self)
+        # обєднання куль у групу
+        self.bullets = pygame.sprite.Group()
         # задати колір фону
         self.bg_color = (230, 230, 230)
+
+    def _fire_bullets(self):
+        """Створюємо нову кулю та додаємо до групи куль"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
     def run_game(self):
         """"Розпочати головний цикл гри"""
@@ -29,6 +37,7 @@ class AlienInvasion:
             self._check_events()
             self._update_screen()
             self.ship.update()
+            self.bullets.update()
 
     def _check_events(self):
         """Реагувати на натискання клавіш та поодії миші"""
@@ -48,6 +57,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullets()
 
     def _check_keyup_events(self, event):
         """Реагувати, коли клавіша не натиснута"""
@@ -61,6 +72,8 @@ class AlienInvasion:
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         # показати останній намальований екран
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         pygame.display.flip()
 
 

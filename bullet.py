@@ -13,7 +13,7 @@ class Bullet(Sprite):
         self.color = self.settings.bullet_color
 
         # створити rect кулі у (0, 0) та задати правильну позицію
-        self.rect = pygame.Rect(0, 0, self.settings.screen_height, self.settings.bullet_width)
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
         self.rect.midtop = ai_game.ship.rect.midtop
 
         # Зберігати позицію кулі як десяткове значення.
