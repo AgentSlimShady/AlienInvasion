@@ -70,6 +70,9 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        # ПЕРЕВІТИти чи котрась з куль не влучила в прибульця
+        # якщо так то позбавитись і кулі і прибульцяґ
+        collision = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
     def run_game(self):
         """"Розпочати головний цикл гри"""
