@@ -78,6 +78,7 @@ class AlienInvasion:
             self.ship.update()
             self._update_bullets()
             self._update_screen()
+            self._update_aliens()
 
     def _check_events(self):
         """Реагувати на натискання клавіш та поодії миші"""
@@ -116,6 +117,28 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
         pygame.display.flip()
+
+    def _update_aliens(self):
+        """Оновоити позиції всіх приульців у флоті"""
+        self._check_fleet_edges()
+        self.aliens.update()
+
+    def _check_fleet_edges(self):
+        """
+        Реагує відповідно до того, чи досяг котрийсь
+        із прибульців краю екрана.
+        :return:
+        """
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Спуск всього флоту та зміна його напрямку"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
 
 if __name__ == '__main__':
