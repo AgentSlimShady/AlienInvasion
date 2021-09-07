@@ -5,10 +5,11 @@ import pygame
 from ship import Ship
 from settings import Settings
 from bullet import Bullet
+from alien import Alien
 
 
 class AlienInvasion:
-    """Загальний клас, що керує песурсами та поведінкою гри""""
+    """Загальний клас, що керує песурсами та поведінкою гри"""
 
     def __init__(self):
         """Ініціалізувати гру, створити ресурси гри"""
@@ -21,10 +22,28 @@ class AlienInvasion:
         # self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height)) #windowed mode
         pygame.display.set_caption("Alien Invasion v.0.1a")
         self.ship = Ship(self)
-        # обєднання куль у групу
+        # обєднання куль та прибульців у групи
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
         # задати колір фону
         self.bg_color = (230, 230, 230)
+        self._create_fleet()
+
+    def _create_fleet(self):
+        """Створити флот прибульців"""
+        # створити прибульця
+        alien = Alien(self)
+        alien_width = alien.rect.width
+        available_space_x = self.settings.screen_width - (2 * alien_width)
+        number_aliens_x = available_space_x // (2*alien_width)
+
+        #створити перший ряд прибульців
+        for alien_number in range(number_aliens_x):
+            #створити прибульця та поставити його до ряду
+            alien = Alien(self)
+            alien.x = alien_width + 2 * alien_width * alien_number
+            alien.rect.x = alien.x
+            self.aliens.add(alien)
 
     def _fire_bullets(self):
         """Створюємо нову кулю та додаємо до групи куль"""
@@ -34,7 +53,7 @@ class AlienInvasion:
 
     def _update_bullets(self):
         """Оновити позицію куль та позбавитися старих куль"""
-        #оновити позиції куль
+        # оновити позиції куль
         self.bullets.update()
         # позбавитись куль шо зникли
         for bullet in self.bullets.copy():
@@ -84,6 +103,7 @@ class AlienInvasion:
         # показати останній намальований екран
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         pygame.display.flip()
 
 
